@@ -7,7 +7,7 @@
 #   styles, custom secretary & automation magic.         #
 #                                                        #
 #   ─────────────────────────────────────────────────    #
-#   🄯 2024 3OUTHBOY                                      #
+#   🄯 2026 3OUTHBOY                                      #
 #                                                        #
 #   Licensed under GNU GPL-3.0-or-later                  #
 #   This is free software: you are welcome to use,       #
