@@ -1,77 +1,279 @@
-⚡️ 3OUTHBOY UserBot
-🎮 پنل مدیریت، شخصی‌سازی و خودکارسازی اکانت تلگرام
+<div align="center">
 
-یوزربات پیشرفته با دو رابط: پنل ربات تلگرامی 🤖 + دستورات سریع در سیو‌مسیج 💬
+# ⚡️ 3OUTHBOY UserBot
 
-PythonPyrogramLicense
+**🎮 A glass panel for managing, customizing & automating your Telegram account**
 
-✨ امکانات
-دسته	قابلیت‌ها
-👤 پروفایل	تغییر اسم، بیو، آیدی و عکس — همه با دستور
-⏰ ساعت زنده	۲۰ استایل زیبا + منطقه زمانی هر کشور 🌍
-🛡 مدیریت	بلاک / آنبلاک / سکوت کاربران در گروه
-🔒 امنیت	قفل دو مرحله‌ای (2FA) + AutoSave مدیا
-🟢 حضور	همیشه آنلاین + اکشن‌های فیک (تایپینگ...)
-⚡️ تعامل	ریاکشن خودکار با ایموجی‌های دلخواه
-🤖 منشی هوشمند	جواب اختصاصی برای هر شخص + فیلتر «فقط سلام»
-📢 تبچی	فوروارد خودکار بین چت‌ها + تایمر یادآور
-🎛 دو رابط	پنل ربات با دکمه‌های شیشه‌ای + کامندهای .
-🧠 هوش مصنوعی	گفتگو با AI (اختیاری)
-🚀 نصب روی سرور (Ubuntu 24.04)
-# پیش‌نیازهاapt update && apt install python3 python3-pip python3-venv -y# دریافت پروژهgit clone https://github.com/USERNAME/REPO.gitcd REPO# نصب کتابخونه‌هاpython3 -m venv venvsource venv/bin/activatepip install -r requirements.txt# تنظیماتcp config.example.py config.pynano config.py# اجرا (بار اول شماره و کد تأیید می‌پرسه)python bot.py
-🕐 اجرای دائمی ۲۴ ساعته (systemd)
-bash
+An advanced Telegram userbot with **two interfaces**: a beautiful Telegram Bot panel 🤖 + fast dot-commands anywhere 💬
 
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)
+![Pyrogram](https://img.shields.io/badge/Pyrogram-2.0-orange?logo=telegram&logoColor=white)
+![Platform](https://img.shields.io/badge/Platform-Ubuntu%20%7C%20Linux%20%7C%20Windows-lightgrey)
+![License](https://img.shields.io/badge/License-GPL--3.0-green)
+
+</div>
+
+---
+
+<div align="center">
+
+> *"Everything in one place — simple, fast, professional."*
+
+</div>
+
+---
+
+## ✨ Features
+
+| Category | What you get |
+|---|---|
+| 👤 **Profile & Bio** | Change name, bio, username & profile photo — all via commands |
+| ⏰ **Live Clock** | 20 beautiful clock styles in your name + timezone support for any country 🌍 |
+| 🛡 **Management** | Block / unblock / mute users in groups |
+| 🔒 **Security** | Two-factor authentication (2FA) + AutoSave media |
+| 🟢 **Presence** | Always-online mode + fake actions (typing, recording...) |
+| ⚡️ **Interactions** | Auto reactions with custom emoji list |
+| 🤖 **Smart Secretary** | Custom auto-reply for each person + "greetings only" filter |
+| 📢 **Forwarder** | Auto-forward messages between chats + reminder timer |
+| 🎛 **Dual Interface** | Glass panel bot with inline buttons + fast `.` commands |
+| 🧠 **AI Assistant** | Chat with AI (optional, OpenRouter-ready) |
+| 📋 **Utilities** | ping, stats, purge, join/leave, info & more |
+
+---
+
+## 🖼 Preview
+
+<!-- Add your screenshot here:
+![Panel](screenshot.png)
+-->
+
+---
+
+## 🚀 Installation
+
+### Requirements
+
+- 🐍 Python 3.10+ (recommended: **3.12**)
+- 🌐 A VPS or server (Ubuntu 24.04 recommended) — or your own PC
+- 🔑 Telegram `API_ID` & `API_HASH` from [my.telegram.org](https://my.telegram.org)
+
+### Step 1 — Clone & Setup
+
+```bash
+# Install prerequisites
+apt update && apt install python3 python3-pip python3-venv -y
+
+# Get the project
+git clone https://github.com/3OUTHBOY/3outhboy-userbot.git
+cd 3outhboy-userbot
+
+# Install dependencies
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Step 2 — Configure
+
+```bash
+cp config.example.py config.py
+nano config.py
+```
+
+Fill in your values:
+
+| Variable | Description | Where to get it |
+|---|---|---|
+| `API_ID` | Telegram app ID | [my.telegram.org](https://my.telegram.org) |
+| `API_HASH` | Telegram app hash | [my.telegram.org](https://my.telegram.org) |
+| `BOT_TOKEN` | Panel bot token (optional) | [@BotFather](https://t.me/BotFather) |
+| `OWNER_ID` | Your numeric Telegram ID | [@userinfobot](https://t.me/userinfobot) |
+| `STRING_SESSION` | Leave empty on server | — |
+| `AI_API_KEY` | OpenRouter key (optional) | [openrouter.ai](https://openrouter.ai) |
+
+### Step 3 — First Run
+
+```bash
+python bot.py
+```
+
+You'll be asked for your phone number and the login code (sent inside your Telegram app, not SMS). This happens **only once** — after that, the session is saved.
+
+### Step 4 — Run 24/7 with systemd 🕐
+
+```bash
 nano /etc/systemd/system/userbot.service
-ini
+```
 
+```ini
 [Unit]
 Description=3OUTHBOY UserBot
 After=network-online.target
+Wants=network-online.target
 
 [Service]
 Type=simple
-WorkingDirectory=/root/REPO
-ExecStart=/root/REPO/venv/bin/python bot.py
+WorkingDirectory=/root/3outhboy-userbot
+ExecStart=/root/3outhboy-userbot/venv/bin/python bot.py
 Restart=always
 RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
-bash
+```
 
+```bash
 systemctl daemon-reload
 systemctl enable --now userbot
-⚙️ تنظیمات (config.py)
-متغیر
-توضیح
-از کجا؟
-API_ID	شناسه اپلیکیشن	my.telegram.org
-API_HASH	هش اپلیکیشن	my.telegram.org
-BOT_TOKEN	توکن ربات پنل	@BotFather
-OWNER_ID	آیدی عددی صاحب اکانت	@userinfobot
-AI_API_KEY	کلید هوش مصنوعی (اختیاری)	openrouter.ai
+```
 
-📖 استفاده
-بعد از اجرا، ربات پنل رو خودکار می‌فرسته:
+Management commands:
 
-چت با ربات پنل: /panel — منوی کامله با دکمه‌های شیشه‌ای 🎛
-هر چتی (سیو‌مسیج و...): .panel — دستورات سریع با نقطه
-فقط OWNER_ID می‌تونه به ربات فرمان بده — بقیه بلاک هستن 🔒
+| Action | Command |
+|---|---|
+| Live logs | `journalctl -u userbot -f` |
+| Restart (after code changes) | `systemctl restart userbot` |
+| Stop / Start | `systemctl stop userbot` / `systemctl start userbot` |
 
-⚠️ هشدارها
-استفاده از یوزربات ممکنه با قوانین تلگرام در تعارض باشه — مسئولیت استفاده با خودته
-قابلیت‌های خودکار (ریاکشن، تبچی) رو معقول استفاده کن تا اکانت محدود نشه
-فایل‌های .session و config.py مثل رمز اکانتت هستن — هرگز به اشتراک نذار!
-🤝 مشارکت
-پیشنهاد یا باگ داری؟ Issue بزن یا Pull Request بفرشت! 💜
+---
 
-📜 لایسنس
-این پروژه تحت لایسنس GPL-3.0 منتشر شده.
+## 📖 Usage
+
+Once running, the panel is automatically delivered to you:
+
+- **Bot chat:** `/panel` — full control with beautiful inline buttons 🎛
+- **Any chat (Saved Messages, etc.):** `.panel` — fast dot-commands
+
+Only the `OWNER_ID` can control the bot — everyone else is ignored 🔒
+
+### Command Reference
+
+<details>
+<summary>👤 Profile & Bio</summary>
+
+- `/name First Last` — change your name
+- `/bio text` — change your bio
+- `/username new_id` — change your @username
+- `/setpic` (reply to a photo) — set profile photo
+
+</details>
+
+<details>
+<summary>⏰ Clock & Fonts</summary>
+
+- `/clock on / off` — live clock next to your name
+- `/clockstyle` — 20 beautiful styles (emoji clock, digital fonts & more)
+- `/clocktz Iran` — automatic timezone for any country
+- `.font bold text` — fancy text styles (bold, italic, mono, double)
+
+</details>
+
+<details>
+<summary>🤖 Secretary (Auto-Reply)</summary>
+
+- `/setreply text` (reply to a message) — custom reply for that specific person
+- `/setreply @username | text` — same, by username
+- `/unsetreply` — remove a custom reply
+- `/userreplies` — list all custom replies
+- `/greetonly on / off` — reply **only** to greetings ("hi", "سلام"...)
+- `/reply on / off / text` — general auto-reply
+- `/addreply keyword | answer` — keyword-based replies
+
+</details>
+
+<details>
+<summary>🛡 Management & Security</summary>
+
+- `/block @user` / `/unblock @user` — block users
+- `.mute 10m` / `.unmute` (reply, supergroups) — silence users
+- `/2fa password` / `/2fa off` — two-factor authentication
+- `/autosave` — auto-save incoming media
+
+</details>
+
+<details>
+<summary>⚡️ Presence & Reactions</summary>
+
+- `/online` — always-online mode
+- `.typing 30` — fake "typing..." action
+- `/react` — auto-reactions toggle
+- `/reactlist ❤️ 🔥 👑` — set your reaction emojis
+
+</details>
+
+<details>
+<summary>📢 Forwarder, Timer & Tools</summary>
+
+- `/fwd add @source @target` — connect two chats
+- `/timer 30s text` — reminder timer (s/m/h/d)
+- `/ping` — latency check
+- `/stats` — account statistics
+- `/info @user` — user info
+- `.purge` (reply) — bulk delete messages
+- `.join @channel` / `.leave` — join/leave chats
+
+</details>
+
+<details>
+<summary>🧠 AI Assistant</summary>
+
+- `/ai your question` — chat with AI (requires `AI_API_KEY`)
+
+</details>
+
+---
+
+## 🐧 Windows Users
+
+Works on Windows too! Just make sure you have **Python 3.12** (newer versions may break Pyrogram):
+
+```
+pip install pyrogram aiohttp
+python bot.py
+```
+
+> 💡 On Windows, `tgcrypto` requires Visual C++ Build Tools — it's optional, everything works without it.
+
+---
+
+## ⚠️ Warnings
+
+- Using a userbot may conflict with Telegram's Terms of Service — **you are responsible for your own account**
+- Use automated features (reactions, forwarder) responsibly to avoid getting limited
+- Your `.session` files and `config.py` are **as sensitive as your password** — never share them!
+- Don't run the same account on two machines at once (duplicate replies / FloodWait)
+
+---
+
+## 🤝 Contributing
+
+Found a bug? Have a cool idea? Feel free to open an [Issue](https://github.com/3OUTHBOY/3outhboy-userbot/issues) or submit a Pull Request! 💜
+
+---
+
+## 📜 License
 
 <div align="center">
 
-🌸 روزت پر از لبخند باشه 🌸
+**3OUTHBOY UserBot** is licensed under the
+**[GNU General Public License v3.0](LICENSE)** 🍃
+
+> *"Free software is a matter of liberty, not price."* — RMS
+
+`🄯 2024 3OUTHBOY — Copyleft, all rights reversed.`
+
+Use it. Break it. Improve it. Share it back. 💜
 
 </div>
-```
+
+---
+
+<div align="center">
+
+**Made with 💜 for the Telegram community**
+
+⭐ Star this repo if you like it!
+
+</div>
+
+
