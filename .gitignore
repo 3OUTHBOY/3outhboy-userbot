@@ -1,0 +1,16 @@
+# 🔒 فایل‌های حساس — هرگز آپلود نشن!
+*.session
+*.session-journal
+config.py
+userbot_db.json
+downloads/
+
+# 🐍 پایتون
+__pycache__/
+*.py[cod]
+venv/
+.env
+
+# 🖥 سیستم
+.DS_Store
+Thumbs.db

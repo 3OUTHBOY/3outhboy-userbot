@@ -1,0 +1,5 @@
+pyrogram==2.0.106
+aiohttp>=3.9
+tzdata
+# اختیاری — سرعت بیشتر (روی ویندوز بدون C++ Build Tools نصب نمی‌شه):
+tgcrypto
