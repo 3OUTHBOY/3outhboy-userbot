@@ -1,9 +1,23 @@
 # -*- coding: utf-8 -*-
-# ═══════════════════════════════════════════════════════════════
-#   ⚡️ پنل سلف 3OUTHBOY ⚡️
-#   یوزربات مدیریت اکانت تلگرام + پنل ربات تلگرامی
-#   Ubuntu 24.04 | Python 3.12
-# ═══════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════
+#                                                        #
+#   ⚡️  3OUTHBOY UserBot  ⚡️                             #
+#                                                        #
+#   A Telegram userbot with a glass panel, live clock    #
+#   styles, custom secretary & automation magic.         #
+#                                                        #
+#   ─────────────────────────────────────────────────    #
+#   🄯 2024 3OUTHBOY                                      #
+#                                                        #
+#   Licensed under GNU GPL-3.0-or-later                  #
+#   This is free software: you are welcome to use,       #
+#   study, modify and share it — as long as your         #
+#   creation stays open-source too.                      #
+#                                                        #
+#   Source: github.com/3OUTHBOY/3outhboy-userbot         #
+#   Made with 💜 for the Telegram community              #
+#                                                        #
+# ═══════════════════════════════════════════════════════
 
 # ── سازگاری با پایتون 3.13+ ──
 import asyncio
