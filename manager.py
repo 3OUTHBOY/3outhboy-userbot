@@ -319,23 +319,23 @@ def menu():
     else:
         st = svc_status()
     print(f"  🤖 Service: {st}\n")
-    print(f"  {BOLD}{BLUE}╔═[ 📋 MENU ]══════════════════════════╗{RESET}")
+    print(f"  {BOLD}{BLUE}╔═[ 📋 MENU ]══════════════════════════════╗{RESET}")
     rows = [
-        (" 1", "📊 Status",          "bot state & summary"),
-        (" 2", "🚀 Run foreground",  "start bot directly"),
-        (" 3", "▶️  Start",          "start background service"),
+        (" 1", "📊 Status",         "bot state & summary"),
+        (" 2", "🚀 Run foreground", "start bot directly"),
+        (" 3", "▶  Start",          "start background service"),
         (" 4", "⏹  Stop",           "stop background service"),
         (" 5", "🔄 Restart",        "restart the service"),
-        (" 6", "📜 Logs",           "live logs  (Ctrl+C exit)"),
-        (" 7", "⬇️  Update",        "pull latest from GitHub"),
-        (" 8", "🔑 Session/Config", "manage login & config"),
+        (" 6", "📜 Logs",           "live logs (Ctrl+C to exit)"),
+        (" 7", "⬇  Update",        "pull latest from GitHub"),
+        (" 8", "🔑 Session & Config","manage login & config"),
         (" 9", "💾 Backup",         "zip sessions & settings"),
         ("10", "🧹 Uninstall",      "remove everything"),
         (" 0", "🚪 Exit",           "goodbye!"),
     ]
     for num, name, desc in rows:
-        print(f"  {BLUE}║{RESET} {MAGENTA}{BOLD}[{num}]{RESET} {name:<17}{DIM}{desc}{RESET} {BLUE}║{RESET}")
-    print(f"  {BOLD}{BLUE}╚══════════════════════════════════════╝{RESET}")
+        print(f"  {BLUE}║{RESET} {GREEN}{BOLD}[{num}]{RESET} {CYAN}{name:<19}{RESET}{DIM}{desc}{RESET} {BLUE}║{RESET}")
+    print(f"  {BOLD}{BLUE}╚════════════════════════════════════════╝{RESET}")
     print()
 
 def main():
