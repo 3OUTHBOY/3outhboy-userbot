@@ -185,7 +185,12 @@ echo -e "${G}${B}  ✅ Installation complete!${R}"
 echo -e "${C}${LINE}${R}"
 cat <<EOF
 
-  🛠  Management commands:
+  🖥  Server Manager (recommended):
+       python3 manager.py
+       A beautiful control panel — status, logs, backup,
+       update, uninstall & more, with a simple number menu!
+
+  🛠  Classic management commands:
        journalctl -u userbot -f        live logs
        systemctl restart userbot       restart (after code changes)
        systemctl stop userbot          stop
@@ -196,3 +201,11 @@ cat <<EOF
        Any chat:   .panel
 
 EOF
+
+read -p "  🖥  Open the Server Manager panel now? (y/N): " OPENMGR
+if [[ "$OPENMGR" == "y" ]]; then
+  cd "${DIR}"
+  python3 manager.py
+else
+  echo -e "${C}  💡 Tip: run  python3 manager.py  anytime.${R}"
+fi
