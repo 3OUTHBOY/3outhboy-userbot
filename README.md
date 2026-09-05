@@ -11,6 +11,8 @@ An advanced Telegram userbot with **two interfaces**: a beautiful Telegram Bot p
 ![Platform](https://img.shields.io/badge/Platform-Ubuntu%20%7C%20Linux%20%7C%20Windows-lightgrey)
 ![License](https://img.shields.io/badge/License-GPL--3.0-green)
 
+[English](README.md) | [فارسی](README.fa.md)
+
 </div>
 
 ---
@@ -51,36 +53,59 @@ An advanced Telegram userbot with **two interfaces**: a beautiful Telegram Bot p
 
 ## 🚀 Installation
 
-### Requirements
+### ⭐ Quick Install — Interactive Installer (recommended)
+
+One command, and the installer does everything: installs packages, creates the
+virtual environment, **asks you for your credentials interactively** (no manual
+file editing!), sets up the 24/7 systemd service and walks you through the
+Telegram login.
+
+```bash
+git clone https://github.com/3OUTHBOY/3outhboy-userbot.git
+cd 3outhboy-userbot
+bash install.sh
+```
+
+The installer will ask for:
+
+- 🔑 `API_ID` & `API_HASH` — from [my.telegram.org](https://my.telegram.org)
+- 🤖 `BOT_TOKEN` — from [@BotFather](https://t.me/BotFather) *(optional, Enter to skip)*
+- 👤 `OWNER_ID` — your numeric ID from [@userinfobot](https://t.me/userinfobot)
+- 🧠 `AI_API_KEY` — from [openrouter.ai](https://openrouter.ai) *(optional, Enter to skip)*
+
+Then it starts the bot for the first login (phone number + login code) and
+enables the 24/7 service automatically. ✨
+
+### 🔧 Manual Install (alternative)
+
+<details>
+<summary>Click to expand manual steps</summary>
+
+#### Requirements
 
 - 🐍 Python 3.10+ (recommended: **3.12**)
 - 🌐 A VPS or server (Ubuntu 24.04 recommended) — or your own PC
 - 🔑 Telegram `API_ID` & `API_HASH` from [my.telegram.org](https://my.telegram.org)
 
-### Step 1 — Clone & Setup
+#### Step 1 — Clone & Setup
 
 ```bash
-# Install prerequisites
 apt update && apt install python3 python3-pip python3-venv -y
 
-# Get the project
 git clone https://github.com/3OUTHBOY/3outhboy-userbot.git
 cd 3outhboy-userbot
 
-# Install dependencies
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Step 2 — Configure
+#### Step 2 — Configure
 
 ```bash
 cp config.example.py config.py
 nano config.py
 ```
-
-Fill in your values:
 
 | Variable | Description | Where to get it |
 |---|---|---|
@@ -91,15 +116,16 @@ Fill in your values:
 | `STRING_SESSION` | Leave empty on server | — |
 | `AI_API_KEY` | OpenRouter key (optional) | [openrouter.ai](https://openrouter.ai) |
 
-### Step 3 — First Run
+#### Step 3 — First Run
 
 ```bash
 python bot.py
 ```
 
-You'll be asked for your phone number and the login code (sent inside your Telegram app, not SMS). This happens **only once** — after that, the session is saved.
+You'll be asked for your phone number and the login code (sent inside your
+Telegram app, not SMS). This happens **only once**.
 
-### Step 4 — Run 24/7 with systemd 🕐
+#### Step 4 — Run 24/7 with systemd 🕐
 
 ```bash
 nano /etc/systemd/system/userbot.service
@@ -127,13 +153,16 @@ systemctl daemon-reload
 systemctl enable --now userbot
 ```
 
-Management commands:
+</details>
+
+### 🛠 Service Management
 
 | Action | Command |
 |---|---|
 | Live logs | `journalctl -u userbot -f` |
 | Restart (after code changes) | `systemctl restart userbot` |
 | Stop / Start | `systemctl stop userbot` / `systemctl start userbot` |
+| Update the bot | `cd 3outhboy-userbot && git pull && systemctl restart userbot` |
 
 ---
 
@@ -223,7 +252,7 @@ Only the `OWNER_ID` can control the bot — everyone else is ignored 🔒
 
 ---
 
-## 🐧 Windows Users
+## 🖥 Windows Users
 
 Works on Windows too! Just make sure you have **Python 3.12** (newer versions may break Pyrogram):
 
@@ -245,6 +274,43 @@ python bot.py
 
 ---
 
+## 🧹 Uninstall — Complete Removal
+
+Want to remove 3OUTHBOY UserBot from your server completely? Run these commands **in order**:
+
+```bash
+# 1. Stop and disable the 24/7 service
+systemctl stop userbot
+systemctl disable userbot
+
+# 2. Delete the service file
+rm -f /etc/systemd/system/userbot.service
+systemctl daemon-reload
+
+# 3. Delete the bot (code, venv, sessions, config, database)
+cd ~
+rm -rf 3outhboy-userbot
+```
+
+⚠️ **Step 3 removes everything** — including your login session
+(`my_account.session`) and all your bot settings (`userbot_db.json`).
+
+### 🔐 Recommended extra security steps (outside the server):
+
+| Step | How |
+|---|---|
+| 🤖 **Revoke the panel bot token** | Message [@BotFather](https://t.me/BotFather) → `/revoke` (or `/mybots` → your bot → API Token → Revoke) |
+| 📱 **Terminate the session inside Telegram** | Telegram Settings → Devices → find this server's session → **Terminate Session** |
+| 🔑 **Regenerate API credentials** (optional, extra safe) | [my.telegram.org](https://my.telegram.org) — revoke and create a new app |
+
+> 💡 Terminating the session from Telegram Settings is **instant and works even
+> if you already deleted the files** — when in doubt, do this.
+
+After these steps, no trace of the bot remains on your server, and all access
+to your account is revoked. 🌸
+
+---
+
 ## 🤝 Contributing
 
 Found a bug? Have a cool idea? Feel free to open an [Issue](https://github.com/3OUTHBOY/3outhboy-userbot/issues) or submit a Pull Request! 💜
@@ -260,7 +326,7 @@ Found a bug? Have a cool idea? Feel free to open an [Issue](https://github.com/3
 
 > *"Free software is a matter of liberty, not price."* — RMS
 
-`🄯 2024 3OUTHBOY — Copyleft, all rights reversed.`
+`🄯 3OUTHBOY — Copyleft, all rights reversed.`
 
 Use it. Break it. Improve it. Share it back. 💜
 
@@ -275,5 +341,3 @@ Use it. Break it. Improve it. Share it back. 💜
 ⭐ Star this repo if you like it!
 
 </div>
-
-
