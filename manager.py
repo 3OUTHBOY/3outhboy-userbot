@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # ═══════════════════════════════════════════════════════
 #   🖥️  3OUTHBOY UserBot — Server Manager
-#   Beautiful, colorful terminal control panel
+#   Beautiful blue-themed terminal control panel
 #   Works on: Ubuntu/Linux & Windows
 # ═══════════════════════════════════════════════════════
 
@@ -19,7 +19,7 @@ SERVICE = "userbot"
 VENV_PY = os.path.join(BASE_DIR, "venv", "Scripts", "python.exe") if IS_WIN \
     else os.path.join(BASE_DIR, "venv", "bin", "python")
 
-# ═══════════════ ANSI colors ═══════════════
+# ═══════════════ 🎨 Colors (blue theme) ═══════════════
 RESET   = "\033[0m"
 BOLD    = "\033[1m"
 DIM     = "\033[2m"
@@ -30,39 +30,38 @@ BLUE    = "\033[94m"
 MAGENTA = "\033[95m"
 CYAN    = "\033[96m"
 WHITE   = "\033[97m"
-BG_BLUE    = "\033[44m"
-BG_MAGENTA = "\033[45m"
-BG_GREEN_B = "\033[30;102m"   # black on light-green  → soft & pretty
-BG_RED_B   = "\033[30;101m"   # black on light-red
-BG_BLUE_B  = "\033[30;104m"   # black on light-blue
 
 def colors_on():
-    """Enable ANSI colors on Windows terminals."""
     if IS_WIN:
-        os.system("")  # enables VT processing
+        os.system("")
 
 colors_on()
 
-# ═══════════════ UI helpers ═══════════════
+# ═══════════════ 🧰 Helpers ═══════════════
 
 def clear():
     os.system("cls" if IS_WIN else "clear")
 
-W = 50
+W = 52
 
 def banner():
     clear()
     print()
-    print(f"{CYAN}╔{'═' * W}╗{RESET}")
-    pad = (W - 30) // 2
-    print(f"{CYAN}║{' ' * pad}{BOLD}{MAGENTA}⚡ 3OUTHBOY UserBot — Manager ⚡{RESET}{' ' * pad}{CYAN}║{RESET}")
-    print(f"{CYAN}╚{'═' * W}╝{RESET}")
-    py = f"{GREEN}✓{RESET}" if os.path.exists(VENV_PY) else f"{RED}✗ (not installed){RESET}"
-    print(f"{DIM}   Platform :{RESET} {'🪟 Windows' if IS_WIN else '🐧 Linux/Ubuntu'}")
-    print(f"{DIM}   Folder   :{RESET} {DIM}{BASE_DIR}{RESET}")
-    print(f"{DIM}   Venv     :{RESET} {py}")
-    print(f"{DIM}   Time     :{RESET} {time.strftime('%Y-%m-%d %H:%M')}")
-    print(f"{MAGENTA}  {'─' * W}{RESET}")
+    print(f"{BLUE}╔{'═' * W}╗{RESET}")
+    mid = "⚡ 3OUTHBOY UserBot ⚡"
+    pad = (W - len(mid)) // 2
+    print(f"{BLUE}║{RESET}{' ' * pad}{BOLD}{CYAN}{mid}{RESET}{' ' * (W - pad - len(mid))}{BLUE}║{RESET}")
+    print(f"{BLUE}╠{'═' * W}╣{RESET}")
+    sub = "🖥 Server Manager Panel"
+    pad2 = (W - len(sub)) // 2
+    print(f"{BLUE}║{RESET}{' ' * pad2}{MAGENTA}{sub}{RESET}{' ' * (W - pad2 - len(sub))}{BLUE}║{RESET}")
+    print(f"{BLUE}╚{'═' * W}╝{RESET}")
+    py = f"{GREEN}✔ installed{RESET}" if os.path.exists(VENV_PY) else f"{RED}✖ not installed{RESET}"
+    print(f"{DIM}   🌍  :{RESET} {CYAN}{'🪟 Windows' if IS_WIN else '🐧 Linux / Ubuntu'}{RESET}")
+    print(f"{DIM}   📂  :{RESET} {DIM}{BASE_DIR}{RESET}")
+    print(f"{DIM}   🐍  :{RESET} {py}")
+    print(f"{DIM}   🕐  :{RESET} {time.strftime('%Y-%m-%d %H:%M')}")
+    print(f"{BLUE}  {'─' * W}{RESET}")
 
 def pause():
     input(f"\n  {DIM}⏸  Press Enter to return...{RESET}")
@@ -75,8 +74,8 @@ def confirm(q):
     return input(f"  {YELLOW}❓ {q}{RESET} {BOLD}(y/N):{RESET} ").strip().lower() == "y"
 
 def header(title):
-    print(f"\n  {BG_BLUE}{WHITE}{BOLD} {title} {RESET}")
-    print(f"  {BLUE}{'─' * 40}{RESET}\n")
+    print(f"\n  {BOLD}{BLUE}◈ {title}{RESET}")
+    print(f"  {BLUE}{'─' * 44}{RESET}\n")
 
 def spinner(text, secs=1.2):
     frames = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
@@ -88,7 +87,7 @@ def spinner(text, secs=1.2):
         i += 1
     print("\r" + " " * 60 + "\r", end="")
 
-# ═══════════════ service helpers ═══════════════
+# ═══════════════ ⚙️ Service helpers ═══════════════
 
 def svc(action):
     if IS_WIN:
@@ -106,20 +105,20 @@ def svc_status():
     r = subprocess.run(["systemctl", "is-active", SERVICE], capture_output=True, text=True)
     s = r.stdout.strip()
     if s == "active":
-        return f"{GREEN}{BOLD}●{RESET} {BOLD}Running{RESET} {GREEN}— bot is alive & healthy{RESET}"
+        return f"{GREEN}{BOLD}● Running{RESET} {GREEN}— bot is alive & healthy 🌿{RESET}"
     if s == "inactive":
-        return f"{RED}{BOLD}●{RESET} {BOLD}Stopped{RESET} {RED}— service is off{RESET}"
+        return f"{RED}{BOLD}● Stopped{RESET} {RED}— service is off{RESET}"
     if s == "failed":
-        return f"{RED}{BOLD}✖ CRASHED{RESET} {RED}— check logs (menu 6){RESET}"
+        return f"{RED}{BOLD}✖ Crashed{RESET} {RED}— check logs (menu 6){RESET}"
     return f"{YELLOW}● {s or 'unknown'}{RESET}"
 
-# ═══════════════ menu actions ═══════════════
+# ═══════════════ 📋 Actions ═══════════════
 
 def action_status():
     banner()
     header("📊 STATUS")
     if IS_WIN:
-        print(f"  🤖 Service: {YELLOW}🖥 Windows mode — run bot via menu 2{RESET}")
+        print(f"  🤖 Service: {BLUE}{BOLD}● Windows Mode{RESET} {DIM}— run bot via menu 2{RESET}")
     else:
         print(f"  🤖 Service: {svc_status()}\n")
         r = subprocess.run(["systemctl", "status", SERVICE, "--no-pager", "-l"],
@@ -135,9 +134,9 @@ def action_status():
             with open(dbf, encoding="utf-8") as f:
                 db = json.load(f)
             on = [k for k, v in db.items() if v is True]
-            print(f"  {CYAN}🎛 Features ON :{RESET} {GREEN}{', '.join(on) if on else '—'}{RESET}")
-            print(f"  {CYAN}📇 Replies    :{RESET} {len(db.get('user_replies', {}))} users")
-            print(f"  {CYAN}📢 Fwd pairs  :{RESET} {len(db.get('fwd_pairs', []))}")
+            print(f"  {CYAN}🎛  Features ON :{RESET} {GREEN}{', '.join(on) if on else '—'}{RESET}")
+            print(f"  {CYAN}📇  Replies    :{RESET} {len(db.get('user_replies', {}))} users")
+            print(f"  {CYAN}📢  Fwd pairs  :{RESET} {len(db.get('fwd_pairs', []))}")
         except Exception:
             pass
     else:
@@ -150,8 +149,8 @@ def action_foreground():
     if not os.path.exists(VENV_PY):
         err("venv missing — run installer first!")
         return pause()
-    print(f"  {DIM}First login? It will ask phone + code (code comes inside Telegram).{RESET}")
-    print(f"  {DIM}Stop with Ctrl+C{RESET}\n")
+    print(f"  {DIM}📱 First login? It asks phone + code (code arrives inside Telegram).{RESET}")
+    print(f"  {DIM}🛑 Stop with Ctrl+C{RESET}\n")
     try:
         subprocess.run([VENV_PY, os.path.join(BASE_DIR, "bot.py")])
     except KeyboardInterrupt:
@@ -164,7 +163,7 @@ def action_logs():
     if IS_WIN:
         warn("journalctl is Linux-only. Use menu option 2 on Windows.")
     else:
-        print(f"  {DIM}Ctrl+C to exit{RESET}\n")
+        print(f"  {DIM}press Ctrl+C to exit{RESET}\n")
         try:
             subprocess.run(["journalctl", "-u", SERVICE, "-f", "--no-pager"])
         except KeyboardInterrupt:
@@ -180,11 +179,13 @@ def action_update():
     if "Already up to date" in out:
         ok("Already up to date! ✨")
     elif r.returncode == 0:
-        ok("Code updated.")
+        ok("Code updated successfully.")
         if not IS_WIN and IS_ROOT and confirm("Restart service now?"):
             spinner("Restarting...")
             svc("restart")
             ok(f"Restarted → {svc_status()}")
+        else:
+            warn("Remember to restart the bot (menu 5).")
     else:
         err("git pull failed — check internet.")
         print(out)
@@ -205,12 +206,12 @@ def action_session():
     if os.path.exists(cfg):
         print(f"  {CYAN}⚙️  config.py:{RESET} {GREEN}✓ exists{RESET}")
     else:
-        print(f"  {CYAN}⚙️  config.py:{RESET} {RED}❌ missing{RESET}")
-    print(f"\n  {BOLD}Options:{RESET}")
-    print(f"   {MAGENTA}[1]{RESET} 🗑  Delete session  (force re-login)")
-    print(f"   {MAGENTA}[2]{RESET} 🔧 Reset config.py")
+        print(f"  {CYAN}⚙️  config.py:{RESET} {RED}✖ missing{RESET}")
+    print(f"\n  {BOLD}{BLUE}Options:{RESET}")
+    print(f"   {MAGENTA}[1]{RESET} 🗑  Delete session  {DIM}(force re-login){RESET}")
+    print(f"   {MAGENTA}[2]{RESET} 🔧  Reset config.py")
     print(f"   {MAGENTA}[3]{RESET} 🔙  Back")
-    c = input(f"\n  {BOLD}Select [1-3]:{RESET} ").strip()
+    c = input(f"\n  {BOLD}{CYAN}Select [1-3]:{RESET} ").strip()
     if c == "1" and sess and confirm(f"Delete {len(sess)} session file(s)?"):
         for f in sess:
             os.remove(os.path.join(BASE_DIR, f))
@@ -228,7 +229,7 @@ def action_backup():
     stamp = time.strftime("%Y%m%d_%H%M%S")
     bfile = os.path.join(bdir, f"backup_{stamp}.zip")
     import zipfile
-    print(f"  {DIM}Packing...{RESET}")
+    print(f"  {DIM}📦 Packing...{RESET}")
     targets = ["userbot_db.json", "config.py"]
     sess = [f for f in os.listdir(BASE_DIR) if f.endswith(".session")]
     with zipfile.ZipFile(bfile, "w") as z:
@@ -238,7 +239,7 @@ def action_backup():
                 z.write(p, t)
                 print(f"   {GREEN}+{RESET} {t}")
     ok(f"Backup saved → {DIM}{bfile}{RESET}")
-    print(f"  {YELLOW}⚠ Contains session & secrets — keep it safe!{RESET}")
+    print(f"  {YELLOW}⚠  Contains session & secrets — keep it safe!{RESET}")
     pause()
 
 def action_uninstall():
@@ -272,46 +273,60 @@ def action_uninstall():
         except Exception:
             pass
     print()
-    print(f"  {BG_MAGENTA}{WHITE}{BOLD}  🌸 Thank you for using 3OUTHBOY UserBot!  {RESET}")
-    print(f"  {MAGENTA}   ⭐ github.com/3OUTHBOY/3outhboy-userbot{RESET}\n")
+    print(f"  {MAGENTA}{'═' * 44}{RESET}")
+    print(f"  {MAGENTA}{BOLD}  🌸  Thank you for using 3OUTHBOY UserBot!{RESET}")
+    print(f"  {CYAN}  ⭐  github.com/3OUTHBOY/3outhboy-userbot{RESET}")
+    print(f"  {MAGENTA}{'═' * 44}{RESET}\n")
     input("  Press Enter to exit...")
     sys.exit(0)
 
 def action_start():
-    banner(); header("▶️  START SERVICE")
+    banner()
+    header("▶️  START SERVICE")
     spinner("Starting...")
-    ok(f"Started → {svc_status()}") if svc("start") else err("Failed (need sudo?)")
+    if svc("start"):
+        ok(f"Started → {svc_status()}")
+    else:
+        err("Failed — need sudo?")
     pause()
 
 def action_stop():
-    banner(); header("⏹  STOP SERVICE")
+    banner()
+    header("⏹  STOP SERVICE")
     spinner("Stopping...")
-    ok(f"Stopped → {svc_status()}") if svc("stop") else err("Failed (need sudo?)")
+    if svc("stop"):
+        ok(f"Stopped → {svc_status()}")
+    else:
+        err("Failed — need sudo?")
     pause()
 
 def action_restart():
-    banner(); header("🔄 RESTART SERVICE")
+    banner()
+    header("🔄 RESTART SERVICE")
     spinner("Restarting...")
-    ok(f"Restarted → {svc_status()}") if svc("restart") else err("Failed (need sudo?)")
+    if svc("restart"):
+        ok(f"Restarted → {svc_status()}")
+    else:
+        err("Failed — need sudo?")
     pause()
 
-# ═══════════════ main menu ═══════════════
+# ═══════════════ 🖼 Main menu ═══════════════
 
 def menu():
     banner()
-        if IS_WIN:
+    if IS_WIN:
         st = f"{BLUE}{BOLD}● Windows Mode{RESET} {DIM}— run bot via menu 2{RESET}"
     else:
         st = svc_status()
     print(f"  🤖 Service: {st}\n")
-    print(f"  {BOLD}{CYAN}┌─[ 📋 MENU ]──────────────────────────┐{RESET}")
+    print(f"  {BOLD}{BLUE}╔═[ 📋 MENU ]══════════════════════════╗{RESET}")
     rows = [
-        (" 1", "📊 Status",         "bot state & summary"),
-        (" 2", "🚀 Run foreground", "start bot directly"),
+        (" 1", "📊 Status",          "bot state & summary"),
+        (" 2", "🚀 Run foreground",  "start bot directly"),
         (" 3", "▶️  Start",          "start background service"),
         (" 4", "⏹  Stop",           "stop background service"),
         (" 5", "🔄 Restart",        "restart the service"),
-        (" 6", "📜 Logs",           "live logs (Ctrl+C exit)"),
+        (" 6", "📜 Logs",           "live logs  (Ctrl+C exit)"),
         (" 7", "⬇️  Update",        "pull latest from GitHub"),
         (" 8", "🔑 Session/Config", "manage login & config"),
         (" 9", "💾 Backup",         "zip sessions & settings"),
@@ -319,22 +334,28 @@ def menu():
         (" 0", "🚪 Exit",           "goodbye!"),
     ]
     for num, name, desc in rows:
-        print(f"  {CYAN}│{RESET} {MAGENTA}{BOLD}[{num}]{RESET} {name:<17}{DIM}{desc}{RESET} {CYAN}│{RESET}")
-    print(f"  {BOLD}{CYAN}└──────────────────────────────────────┘{RESET}")
+        print(f"  {BLUE}║{RESET} {MAGENTA}{BOLD}[{num}]{RESET} {name:<17}{DIM}{desc}{RESET} {BLUE}║{RESET}")
+    print(f"  {BOLD}{BLUE}╚══════════════════════════════════════╝{RESET}")
     print()
 
 def main():
     while True:
         menu()
-        choice = input(f"  {BOLD}{GREEN}👉 Select:{RESET} ").strip()
+        choice = input(f"  {BOLD}{CYAN}👉  Select:{RESET} ").strip()
         actions = {
-            "1": action_status, "2": action_foreground, "3": action_start,
-            "4": action_stop, "5": action_restart, "6": action_logs,
-            "7": action_update, "8": action_session, "9": action_backup,
+            "1": action_status,
+            "2": action_foreground,
+            "3": action_start,
+            "4": action_stop,
+            "5": action_restart,
+            "6": action_logs,
+            "7": action_update,
+            "8": action_session,
+            "9": action_backup,
             "10": action_uninstall,
         }
         if choice == "0":
-            print(f"\n  {MAGENTA}👋 Goodbye! Made with 💜{RESET}\n")
+            print(f"\n  {MAGENTA}👋  Goodbye! Made with 💜{RESET}\n")
             break
         act = actions.get(choice)
         if act:
@@ -347,4 +368,4 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print(f"\n\n  {MAGENTA}👋 Goodbye!{RESET}\n")
+        print(f"\n\n  {MAGENTA}👋  Goodbye!{RESET}\n")
