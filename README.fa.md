@@ -1,4 +1,4 @@
- <div align="center">
+<div align="center">
 
 # ⚡️ پنل سلف 3OUTHBOY
 
@@ -53,36 +53,55 @@
 
 ## 🚀 نصب
 
-### پیش‌نیازها
+### ⭐ نصب سریع — نصاب تعاملی (پیشنهادی)
+
+فقط **یه دستور**! نصاب خودش همه‌کار رو انجام می‌ده: پکیج‌های سیستم رو نصب می‌کنه، محیط مجازی می‌سازه، **تنظیمات رو به‌صورت سوال ازت می‌پرسه** (بدون ویرایش دستی فایل!)، سرویس ۲۴ ساعته systemd رو راه می‌ندازه و ورود به تلگرام رو هم قدم‌به‌قدم باهات انجام می‌ده ✨
+
+```bash
+git clone https://github.com/3OUTHBOY/3outhboy-userbot.git
+cd 3outhboy-userbot
+bash install.sh
+```
+
+نصاب ازت این‌ها رو می‌پرسه:
+
+- 🔑 `API_ID` و `API_HASH` — از [my.telegram.org](https://my.telegram.org)
+- 🤖 `BOT_TOKEN` — از [@BotFather](https://t.me/BotFather) *(اختیاری — Enter بزن تا رد شه)*
+- 👤 `OWNER_ID` — آیدی عددی خودت از [@userinfobot](https://t.me/userinfobot)
+- 🧠 `AI_API_KEY` — از [openrouter.ai](https://openrouter.ai) *(اختیاری — Enter بزن تا رد شه)*
+
+بعدش خودش ربات رو برای اولین ورود روشن می‌کنه (شماره تلفن + کد ورود که داخل خود تلگرام میاد) و در آخر سرویس ۲۴ ساعته رو خودکار فعال می‌کنه ✅
+
+### 🔧 نصب دستی (روش جایگزین)
+
+<details>
+<summary>باز کن برای دیدن مراحل دستی</summary>
+
+#### پیش‌نیازها
 
 - 🐍 پایتون 3.10 به بالا (پیشنهادی: **3.12**)
 - 🌐 یه سرور یا VPS (پیشنهادی: Ubuntu 24.04) — یا خود PC خودت
 - 🔑 `API_ID` و `API_HASH` از [my.telegram.org](https://my.telegram.org)
 
-### قدم ۱ — دریافت پروژه و نصب
+#### قدم ۱ — دریافت پروژه و نصب
 
 ```bash
-# نصب پیش‌نیازها
 apt update && apt install python3 python3-pip python3-venv -y
 
-# دریافت پروژه
 git clone https://github.com/3OUTHBOY/3outhboy-userbot.git
 cd 3outhboy-userbot
 
-# نصب کتابخونه‌ها
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### قدم ۲ — تنظیمات
+#### قدم ۲ — تنظیمات
 
 ```bash
 cp config.example.py config.py
 nano config.py
 ```
-
-مقدارها رو پر کن:
 
 | متغیر | توضیح | از کجا بگیرمش؟ |
 |---|---|---|
@@ -93,15 +112,15 @@ nano config.py
 | `STRING_SESSION` | روی سرور خالی بذار | — |
 | `AI_API_KEY` | کلید OpenRouter (اختیاری) | [openrouter.ai](https://openrouter.ai) |
 
-### قدم ۳ — اولین اجرا
+#### قدم ۳ — اولین اجرا
 
 ```bash
 python bot.py
 ```
 
-ازت شماره تلفن و کد ورود رو می‌پرسه (کد داخل خود تلگرام میاد، نه SMS). این فقط **یک بار** اتفاق می‌افته — بعدش سشن ذخیره می‌شه ✅
+ازت شماره تلفن و کد ورود رو می‌پرسه (کد **داخل خود تلگرام** میاد، نه SMS). این فقط **یک بار** اتفاق می‌افته ✅
 
-### قدم ۴ — اجرای دائمی ۲۴ ساعته با systemd 🕐
+#### قدم ۴ — اجرای دائمی ۲۴ ساعته با systemd 🕐
 
 ```bash
 nano /etc/systemd/system/userbot.service
@@ -129,13 +148,16 @@ systemctl daemon-reload
 systemctl enable --now userbot
 ```
 
-دستورات مدیریتی:
+</details>
+
+### 🛠 مدیریت سرویس
 
 | کار | دستور |
 |---|---|
 | دیدن لاگ زنده | `journalctl -u userbot -f` |
 | ری‌استارت (بعد از تغییر کد) | `systemctl restart userbot` |
 | خاموش / روشن | `systemctl stop userbot` / `systemctl start userbot` |
+| آپدیت ربات | `cd 3outhboy-userbot && git pull && systemctl restart userbot` |
 
 ---
 
@@ -247,6 +269,40 @@ python bot.py
 
 ---
 
+## 🧹 حذف کامل — پاک کردن از روی سرور
+
+می‌خوای 3OUTHBOY UserBot رو به‌طور کامل از سرورت پاک کنی؟ این دستورات رو **به ترتیب** بزن:
+
+```bash
+# ۱. خاموش و غیرفعال‌کردن سرویس ۲۴ ساعته
+systemctl stop userbot
+systemctl disable userbot
+
+# ۲. حذف فایل سرویس
+rm -f /etc/systemd/system/userbot.service
+systemctl daemon-reload
+
+# ۳. حذف کامل ربات (کد، venv، سشن ورود، تنظیمات، دیتابیس)
+cd ~
+rm -rf 3outhboy-userbot
+```
+
+⚠️ **قدم ۳ همه‌چیز رو پاک می‌کنه** — شامل سشن ورودت (`my_account.session`) و تمام تنظیمات ربات (`userbot_db.json`).
+
+### 🔐 مراحل امنیتی تکمیلی (خارج از سرور — پیشنهادی):
+
+| قدم | چطوری |
+|---|---|
+| 🤖 **ابطال توکن ربات پنل** | به [@BotFather](https://t.me/BotFather) بزن `/revoke` (یا `/mybots` → رباتت → API Token → Revoke) |
+| 📱 **قطع سشن از داخل تلگرام** | تنظیمات تلگرام → Devices → سشن سرور رو پیدا کن → **Terminate Session** |
+| 🔑 **ساخت مجدد API** (اختیاری — خیلی امن) | [my.telegram.org](https://my.telegram.org) — اپ قبلی رو حذف و اپ جدید بساز |
+
+> 💡 قطع کردن سشن از تنظیمات تلگرام **فوری کار می‌کنه** و حتی اگه فایل‌ها رو قبلاً پاک کرده باشی هم جواب می‌ده — موقع شک، همینو انجام بده.
+
+بعد از این مراحل، هیچ اثری از ربات روی سرورت نمی‌مونه و همه‌ی دسترسی‌ها به اکانتت باطل شدن 🌸
+
+---
+
 ## 🤝 مشارکت
 
 باگ پیدا کردی؟ ایده‌ی باحالی داری؟ خوشحال می‌شیم [Issue](https://github.com/3OUTHBOY/3outhboy-userbot/issues) بزنی یا Pull Request بفرستی! 💜
@@ -262,7 +318,7 @@ python bot.py
 
 > «نرم‌افزار آزاد بحث آزادیه، نه قیمت.» — RMS
 
-`🄯 2024 3OUTHBOY — کاپی‌لفت، همه‌ی حقوق برعکس!`
+`🄯 3OUTHBOY — کاپی‌لفت، همه‌ی حقوق برعکس!`
 
 استفاده کن. بشکن. بهترش کن. دوباره به اشتراک بذار. 💜
 
