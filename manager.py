@@ -31,9 +31,10 @@ MAGENTA = "\033[95m"
 CYAN    = "\033[96m"
 WHITE   = "\033[97m"
 BG_BLUE    = "\033[44m"
-BG_GREEN   = "\033[42m"
-BG_RED     = "\033[41m"
 BG_MAGENTA = "\033[45m"
+BG_GREEN_B = "\033[30;102m"   # black on light-green  → soft & pretty
+BG_RED_B   = "\033[30;101m"   # black on light-red
+BG_BLUE_B  = "\033[30;104m"   # black on light-blue
 
 def colors_on():
     """Enable ANSI colors on Windows terminals."""
@@ -104,10 +105,13 @@ def svc_status():
         return None
     r = subprocess.run(["systemctl", "is-active", SERVICE], capture_output=True, text=True)
     s = r.stdout.strip()
-    if s == "active":    return f"{BG_GREEN}{WHITE}{BOLD} 🟢 RUNNING {RESET}"
-    if s == "inactive":  return f"{BG_RED}{WHITE}{BOLD} 🔴 STOPPED {RESET}"
-    if s == "failed":    return f"{BG_RED}{WHITE}{BOLD} 💥 FAILED  {RESET}"
-    return f"{YELLOW}⚪ {s or 'unknown'}{RESET}"
+    if s == "active":
+        return f"{GREEN}{BOLD}●{RESET} {BOLD}Running{RESET} {GREEN}— bot is alive & healthy{RESET}"
+    if s == "inactive":
+        return f"{RED}{BOLD}●{RESET} {BOLD}Stopped{RESET} {RED}— service is off{RESET}"
+    if s == "failed":
+        return f"{RED}{BOLD}✖ CRASHED{RESET} {RED}— check logs (menu 6){RESET}"
+    return f"{YELLOW}● {s or 'unknown'}{RESET}"
 
 # ═══════════════ menu actions ═══════════════
 
@@ -295,8 +299,8 @@ def action_restart():
 
 def menu():
     banner()
-    if IS_WIN:
-        st = f"{BG_BLUE}{WHITE}{BOLD} 🖥 WINDOWS MODE {RESET}"
+        if IS_WIN:
+        st = f"{BLUE}{BOLD}● Windows Mode{RESET} {DIM}— run bot via menu 2{RESET}"
     else:
         st = svc_status()
     print(f"  🤖 Service: {st}\n")
