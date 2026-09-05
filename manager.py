@@ -20,52 +20,44 @@ VENV_PY = os.path.join(BASE_DIR, "venv", "Scripts", "python.exe") if IS_WIN \
     else os.path.join(BASE_DIR, "venv", "bin", "python")
 
 # ═══════════════ ANSI colors ═══════════════
-# True ANSI escape codes — work in Linux terminals & modern Windows
-RESET  = "\033[0m"
-BOLD   = "\033[1m"
-DIM    = "\033[2m"
-RED    = "\033[91m"
-GREEN  = "\033[92m"
-YELLOW = "\033[93m"
-BLUE   = "\033[94m"
-MAGENTA= "\033[95m"
-CYAN   = "\033[96m"
-WHITE  = "\033[97m"
-BG_BLUE  = "\033[44m"
-BG_GREEN = "\033[42m"
-BG_RED   = "\033[41m"
+RESET   = "\033[0m"
+BOLD    = "\033[1m"
+DIM     = "\033[2m"
+RED     = "\033[91m"
+GREEN   = "\033[92m"
+YELLOW  = "\033[93m"
+BLUE    = "\033[94m"
+MAGENTA = "\033[95m"
+CYAN    = "\033[96m"
+WHITE   = "\033[97m"
+BG_BLUE    = "\033[44m"
+BG_GREEN   = "\033[42m"
+BG_RED     = "\033[41m"
 BG_MAGENTA = "\033[45m"
 
 def colors_on():
-    """Enable ANSI colors on old Windows terminals."""
+    """Enable ANSI colors on Windows terminals."""
     if IS_WIN:
-        os.system("")  # magic trick: enables VT processing
+        os.system("")  # enables VT processing
 
 colors_on()
-
-def strip_ansi(s):
-    return s
 
 # ═══════════════ UI helpers ═══════════════
 
 def clear():
     os.system("cls" if IS_WIN else "clear")
 
-W = 54
-
-def box_title():
-    t = "⚡️ 3OUTHBOY UserBot — Manager"
-    pad = (W - 24) // 2
-    print(f"{CYAN}╔{'═' * W}╗{RESET}")
-    print(f"{CYAN}║{' ' * pad}{BOLD}{MAGENTA}⚡️ 3OUTHBOY UserBot{RESET}{CYAN}  Server  ⚡️{' ' * pad}║{RESET}")
-    print(f"{CYAN}╚{'═' * W}╝{RESET}")
+W = 50
 
 def banner():
     clear()
     print()
-    box_title()
+    print(f"{CYAN}╔{'═' * W}╗{RESET}")
+    pad = (W - 30) // 2
+    print(f"{CYAN}║{' ' * pad}{BOLD}{MAGENTA}⚡ 3OUTHBOY UserBot — Manager ⚡{RESET}{' ' * pad}{CYAN}║{RESET}")
+    print(f"{CYAN}╚{'═' * W}╝{RESET}")
     py = f"{GREEN}✓{RESET}" if os.path.exists(VENV_PY) else f"{RED}✗ (not installed){RESET}"
-    print(f"{DIM}   Platform :{RESET} {CYAN}{'🪟 Windows' if IS_WIN else '🐧 Linux/Ubuntu'}{RESET}")
+    print(f"{DIM}   Platform :{RESET} {'🪟 Windows' if IS_WIN else '🐧 Linux/Ubuntu'}")
     print(f"{DIM}   Folder   :{RESET} {DIM}{BASE_DIR}{RESET}")
     print(f"{DIM}   Venv     :{RESET} {py}")
     print(f"{DIM}   Time     :{RESET} {time.strftime('%Y-%m-%d %H:%M')}")
@@ -86,12 +78,11 @@ def header(title):
     print(f"  {BLUE}{'─' * 40}{RESET}\n")
 
 def spinner(text, secs=1.2):
-    """little loading animation"""
     frames = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
     end = time.time() + secs
     i = 0
     while time.time() < end:
-        print(f"\r  {CYAN}{frames[i % len(frames)]}{RESET} {text}", end="", flush=True)
+        print(f"\r  {CYAN}{frames[i % len(frames)]}{RESET} {text}   ", end="", flush=True)
         time.sleep(0.08)
         i += 1
     print("\r" + " " * 60 + "\r", end="")
@@ -113,9 +104,9 @@ def svc_status():
         return None
     r = subprocess.run(["systemctl", "is-active", SERVICE], capture_output=True, text=True)
     s = r.stdout.strip()
-    if s == "active":  return f"{BG_GREEN}{WHITE}{BOLD} 🟢 RUNNING {RESET}"
-    if s == "inactive":return f"{BG_RED}{WHITE}{BOLD} 🔴 STOPPED {RESET}"
-    if s == "failed":  return f"{BG_RED}{WHITE}{BOLD} 💥 FAILED  {RESET}"
+    if s == "active":    return f"{BG_GREEN}{WHITE}{BOLD} 🟢 RUNNING {RESET}"
+    if s == "inactive":  return f"{BG_RED}{WHITE}{BOLD} 🔴 STOPPED {RESET}"
+    if s == "failed":    return f"{BG_RED}{WHITE}{BOLD} 💥 FAILED  {RESET}"
     return f"{YELLOW}⚪ {s or 'unknown'}{RESET}"
 
 # ═══════════════ menu actions ═══════════════
@@ -140,7 +131,7 @@ def action_status():
             with open(dbf, encoding="utf-8") as f:
                 db = json.load(f)
             on = [k for k, v in db.items() if v is True]
-            print(f"  {CYAN}🎛  Features ON :{RESET} {GREEN}{', '.join(on) if on else '—'}{RESET}")
+            print(f"  {CYAN}🎛 Features ON :{RESET} {GREEN}{', '.join(on) if on else '—'}{RESET}")
             print(f"  {CYAN}📇 Replies    :{RESET} {len(db.get('user_replies', {}))} users")
             print(f"  {CYAN}📢 Fwd pairs  :{RESET} {len(db.get('fwd_pairs', []))}")
         except Exception:
@@ -207,7 +198,10 @@ def action_session():
     else:
         print(f"  {CYAN}📱 Sessions:{RESET} {YELLOW}none (not logged in){RESET}")
     cfg = os.path.join(BASE_DIR, "config.py")
-    print(f"  {CYAN}⚙️  config.py:{RESET} {GREEN}✓ exists' if os.path.exists(cfg) else '❌ missing'}")
+    if os.path.exists(cfg):
+        print(f"  {CYAN}⚙️  config.py:{RESET} {GREEN}✓ exists{RESET}")
+    else:
+        print(f"  {CYAN}⚙️  config.py:{RESET} {RED}❌ missing{RESET}")
     print(f"\n  {BOLD}Options:{RESET}")
     print(f"   {MAGENTA}[1]{RESET} 🗑  Delete session  (force re-login)")
     print(f"   {MAGENTA}[2]{RESET} 🔧 Reset config.py")
@@ -301,25 +295,28 @@ def action_restart():
 
 def menu():
     banner()
-    st = svc_status() if not IS_WIN else f"{BG_BLUE}{WHITE}{BOLD} 🖥 WINDOWS MODE {RESET}"
+    if IS_WIN:
+        st = f"{BG_BLUE}{WHITE}{BOLD} 🖥 WINDOWS MODE {RESET}"
+    else:
+        st = svc_status()
     print(f"  🤖 Service: {st}\n")
-    print(f"  {BOLD}{CYAN}┌─[ 📋 MENU ]─────────────────────────────┐{RESET}")
+    print(f"  {BOLD}{CYAN}┌─[ 📋 MENU ]──────────────────────────┐{RESET}")
     rows = [
-        (" 1", "📊 Status",        "bot state & summary"),
+        (" 1", "📊 Status",         "bot state & summary"),
         (" 2", "🚀 Run foreground", "start bot directly"),
-        (" 3", "▶️  Start",         "start background service"),
-        (" 4", "⏹  Stop",          "stop background service"),
-        (" 5", "🔄 Restart",       "restart the service"),
-        (" 6", "📜 Logs",          "live logs (Ctrl+C exit)"),
-        (" 7", "⬇️  Update",       "pull latest from GitHub"),
-        (" 8", "🔑 Session/Config","manage login & config"),
-        (" 9", "💾 Backup",        "zip sessions & settings"),
-        ("10", "🧹 Uninstall",     "remove everything"),
-        (" 0", "🚪 Exit",          "goodbye!"),
+        (" 3", "▶️  Start",          "start background service"),
+        (" 4", "⏹  Stop",           "stop background service"),
+        (" 5", "🔄 Restart",        "restart the service"),
+        (" 6", "📜 Logs",           "live logs (Ctrl+C exit)"),
+        (" 7", "⬇️  Update",        "pull latest from GitHub"),
+        (" 8", "🔑 Session/Config", "manage login & config"),
+        (" 9", "💾 Backup",         "zip sessions & settings"),
+        ("10", "🧹 Uninstall",      "remove everything"),
+        (" 0", "🚪 Exit",           "goodbye!"),
     ]
     for num, name, desc in rows:
-        print(f"  {CYAN}│{RESET} {MAGENTA}{BOLD}[{num}]{RESET} {name:<18}{DIM}{desc}{RESET} {CYAN}│{RESET}")
-    print(f"  {BOLD}{CYAN}└────────────────────────────────────────┘{RESET}")
+        print(f"  {CYAN}│{RESET} {MAGENTA}{BOLD}[{num}]{RESET} {name:<17}{DIM}{desc}{RESET} {CYAN}│{RESET}")
+    print(f"  {BOLD}{CYAN}└──────────────────────────────────────┘{RESET}")
     print()
 
 def main():
