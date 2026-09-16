@@ -21,10 +21,8 @@
 
 # ── سازگاری با پایتون 3.13+ ──
 import asyncio
-try:
-    asyncio.get_event_loop()
-except RuntimeError:
-    asyncio.set_event_loop(asyncio.new_event_loop())
+_loop = asyncio.new_event_loop()
+asyncio.set_event_loop(_loop)
 
 import json, os, random, re, time
 from datetime import datetime, timedelta
@@ -37,6 +35,13 @@ from pyrogram.raw import functions, types as raw
 from pyrogram.types import (
     Message, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup,
 )
+# 🔧 سازگاری kurigram: آرگومان دوم دکمه = callback_data
+from pyrogram.types import InlineKeyboardButton as _RealButton
+
+def InlineKeyboardButton(text, data=None, **kwargs):
+    if data is not None:
+        kwargs.setdefault("callback_data", data)
+    return _RealButton(text, **kwargs)
 
 # ═══════════════════════════════════════════════
 #  ⚙️ تنظیمات — از فایل config.py خونده می‌شه
@@ -1417,4 +1422,4 @@ async def main():
         await bot.stop()
 
 if __name__ == "__main__":
-    app.run(main())
+    asyncio.get_event_loop().run_until_complete(main())
