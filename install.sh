@@ -49,9 +49,9 @@ fi
 PIP="${DIR}/venv/bin/pip"
 "${PIP}" install --upgrade pip -q
 if [[ -f "${DIR}/requirements.txt" ]]; then
-  "${PIP}" install -r "${DIR}/requirements.txt" || "${PIP}" install pyrogram aiohttp tzdata
+    "${PIP}" install -r "${DIR}/requirements.txt" || "${PIP}" install kurigram aiohttp tzdata
 else
-  "${PIP}" install pyrogram aiohttp tzdata
+  "${PIP}" install kurigram aiohttp tzdata
 fi
 ok "Libraries installed"
 
@@ -150,7 +150,7 @@ Wants=network-online.target
 [Service]
 Type=simple
 WorkingDirectory=${DIR}
-ExecStart=${DIR}/venv/bin/python bot.py
+ExecStart=${DIR}/venv/bin/python -u bot.py
 Restart=always
 RestartSec=10
 
